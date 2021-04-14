@@ -1,6 +1,14 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+/**
+ * @file main.c
+ * @author Palaash Atri
+ * @brief Main business logic. Input file, encrypt, decrypt or read data from the file.
+ * @version 0.1
+ * @date 2021-04-15
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+#include "fun.h"
 
 int main()
 {
@@ -9,127 +17,177 @@ int main()
     int i,j=0,k,key=0,eof;
     int password,varInput;
 
+    
     system("cls||clear");
+
+    /**
+     * @brief Access screen to the Program
+     * 
+     */
 
     printf("Welcome to the Program! \nPlease input password :  ");
     scanf("%d",&password);
     
     if(password == 1234)
     {
+        /**
+         * @brief Main menu to the program
+         * 
+         */
         system("cls||clear");
-        printf("Welcome!\nInput Your Choice : ");
         label1:
-        system("cls||clear");
+        printf("Welcome!\nInput Your Choice : ");
+        /**
+         * @brief Enter input :
+         *                  1 - Encrypt a file
+         *                  2 - Decrypt a file
+         *                  3 - Read data from a file
+         *                  Any other integer - Exit the program
+         * 
+         */
         printf("\n1.Encryption\n2.Decryption\n3.View Contents of the file\n\nPress any other key to exit!\nEnter : ");
         scanf("%d",&varInput);
 
         if(varInput==1)
         {
-            // input file
+            // ENCRYPTION
+
+
+            /**
+             * @brief Basic encryption logic : Input the file, 
+             *                                 Add data to the file, 
+             *                                 Input the encryption key,
+             *                                 Encrypt the data,                                              
+             *                                 Close the file
+             * 
+             */
+
+            
             system("cls||clear");
             printf("Welcome to Encryption Block!\n");
             while ((getchar()) != '\n'); // clear buffer for ENTER
-            printf("Enter name of file : ");
-            // fgets(name,sizeof(name),stdin);
+
+            // input file
+            printf("Enter name of file : ");            
             scanf("%s",name);
+
+            // Append .txt to filename
             strcat(name,".txt");
+
+            // Open the file in write mode
             fp = fopen(name,"w");
+
+            // Input data to the file
             printf("\nEnter data to the file : ");
             while ((getchar()) != '\n'); // clear buffer for ENTER
             fgets(data,sizeof(data),stdin);
+
+            // Enter the encryption passkey
             printf("\nEnter the passkey : ");
             scanf("%d",&key);
-            // encryption code here
-            for(i=0;i<strlen(data);i++)
-            {
-                data[i] = data[i]+key;
-            }
 
-            //add to file
-            fprintf(fp,"%s",data);
+            //Encrypt data & add to file
+            fprintf(fp,"%s",encryptFile(data,key));
+
+            // Close the file after operations
             fclose(fp);
+
             printf("Data has been successfully encrypted. Going back to main screen!\n");
-                // if success
-                    goto label1;
+            // Jump to main menu
+            goto label1;
         } 
         else if(varInput==2)
         {
-            //input file
+
+            // DECRYPTION
+
+            /**
+             * @brief Basic encryption logic : Input the file, 
+             *                                 Add data to the file, 
+             *                                 Input the decryption key,
+             *                                 Decrypt the data,                                              
+             *                                 Close the file
+             * 
+             */
+
+            
             system("cls||clear");
             printf("\nWelcome to Decryption Block!\n");
             while ((getchar()) != '\n'); // clear buffer for ENTER
-            printf("Enter name of file : ");
-            // fgets(name,sizeof(name),stdin);
+
+            //input file
+            printf("Enter name of file : ");            
             scanf("%s",name);
+
+            // Append .txt to filename
             strcat(name,".txt");
+
+            // Open the file in read/write mode
             fp = fopen(name,"w+");
+
+            // Enter the decryption passkey
             printf("\nEnter the passkey : ");
             scanf("%d",&key);
 
-            // read data from the file
-            // while(eof!=EOF)
-            // {
-            //     fscanf(fp,"%s",data);                
-            //     //decryption code here
-            //     for(i=0;i<strlen(data);i++)
-            //     {
-            //         data[i] = data[i]-key;
-            //     }
-            // }
+            // Read data from the file
+            fscanf(fp,"%s",data);  
 
-            fscanf(fp,"%s",data);
-            
-                for(i=0;i<strlen(data);i++)
-                {
-                    data[i] = data[i]-key;
-                }
-            
-
-            // overwrite existing data
+            // Set seek to first position in the file
             fseek(fp,0,SEEK_SET);
-            // for(i=0;i<strlen(data);i++)
-            // {
-            //     fprintf(fp,"%s",data);
-            // }
+            
+            // Overwrite the data in the file with decrypted data
+            fprintf(fp,"%s",decryptFile(data,key));
 
-            fprintf(fp,"%s",data);
-
+            // Close the file after operations
             fclose(fp);
 
             printf("\nData has been successfully decrypted. Going back to main screen! \n");
-            
-                // if success
-                    goto label1;
+            // Jump to main menu
+            goto label1;
         } 
         else if(varInput == 3)
         {
-            // input file
+
+            // READ FILE
+
+            /**
+             * @brief Read current data in the file.
+             * 
+             */
+            
             system("cls||clear");
             while ((getchar()) != '\n'); // clear buffer for ENTER
-            printf("Enter name of file : ");
-            // fgets(name,sizeof(name),stdin);
+
+            // input file
+            printf("Enter name of file : ");            
             scanf("%s",name);
+
+            // Append .txt to filename
             strcat(name,".txt");
+
+            // Open file in read-only mode
             fp = fopen(name,"r");
-            // display file data
-                
+
+            // display file data                
             printf("\nCurrent data in the file : ");
             fscanf(fp,"%s",data);
             printf("%s",data);
 
+            // Close the file after operations
             fclose(fp);
-            //if success
-            printf("\nEnter 1 to go back to main menu : ");
-            scanf("%d",&k);
-            if(k==1)
-            {
-                goto label1;
-            }
             
+            // Wait for user input to go back to main menu
+            printf("\nEnter any key to go back to main menu : ");
+            getchar();
+            goto label1;          
                     
         } 
         else 
         {
+            /**
+             * @brief When user inputs any other number : Terminate the program
+             * 
+             */
             system("cls||clear");
             printf("Thank You!\n");
         }
@@ -137,6 +195,10 @@ int main()
 
     else 
     {
+        /**
+         * @brief Terminate the program if wrong password is entered.
+         * 
+         */
         printf("\nInvalid password entered. Program will terminate now...");
     }
 
