@@ -148,8 +148,6 @@ int main()
         else if(varInput == 3)
         {
 
-            // READ FILE
-
             /**
              * @brief Read current data in the file.
              * 
