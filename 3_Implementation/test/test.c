@@ -9,6 +9,7 @@
  * 
  */
 
+#include "unity_internals.h"
 #include "unity.h"
 #include "fun.h"
 
