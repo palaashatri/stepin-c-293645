@@ -6,8 +6,7 @@ BUILD_DIR = Build
 SRC = src/encrypt.c\
 src/decrypt.c
 
-TEST_SRC = test/test_encrypt.c\
-test/test_decrypt.c\
+TEST_SRC = test/test.c\
 unity/unity.c
 
 INC = -Iinc\
